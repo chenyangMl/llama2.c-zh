@@ -126,16 +126,12 @@ class ShakespeareTask:
             y = y.to(device, non_blocking=True)
             yield x, y
 
-parser = argparse.ArgumentParser()
-parser.add_argument("stage", type=str, choices=["download", "train_tokenizer", "pretokenize"])
-parser.add_argument("lang", type=str, default="en",
-                        choices=["en"], help="choice language")
-args = parser.parse_args()
-    
 
 if __name__ == "__main__":
 
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument("stage", type=str, choices=["download", "train_tokenizer", "pretokenize"])
+    args = parser.parse_args()
     # depending on the stage call the appropriate function
     fun = {
         "download": download,

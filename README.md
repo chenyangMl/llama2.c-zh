@@ -177,13 +177,13 @@ TOKENIZER_MODEL = "tokenizers/llama2en/tokenizer.model" # the llama2-enzh.
 TOKENIZER_BIN = "tokenizers/llama2en/tokenizer.bin" # binary version of the tokenizer for inference in C
 ```
 
-运行数据加载和预处理脚本
+修改config.py中的LANGUAGE配置选择数据，运行数据加载和预处理脚本
 
 ```
 #下载中英文数据
->> python tinystories.py download enzh
+>> python tinystories.py download 
 # tokenizer 数据
->> python tinystories.py pretokenize enzh
+>> python tinystories.py pretokenize
 ```
 
 运行训练脚本, 根据实际硬件情况修改下训练参数

@@ -8,13 +8,14 @@ import json
 import os
 import random
 from typing import List
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 import requests
 import torch
 import torch.distributed as dist
 from tqdm import tqdm
+from config import LANGUAGE
 
 from tokenizer import Tokenizer
 
@@ -36,7 +37,7 @@ def download_file(url: str, fname: str, chunk_size=1024):
             bar.update(size)
 
 
-def download(lang):
+def download():
     def download_with_url(data_url, data_filename):
         if not os.path.exists(data_filename):
             print(f"Downloading {data_url} to {data_filename}...")
@@ -76,10 +77,10 @@ def download(lang):
     data_urls = [data_url_en, data_url_zh]
     data_filenames = [data_filename_en, data_filename_zh]
     data_dirs = [data_dir_en, data_dir_zh]
-    if lang=="en":
+    if LANGUAGE=="en":
         download_with_url(data_urls[0], data_filenames[0])
         unpack(data_dirs[0], data_filenames[0])
-    elif lang=="zh":
+    elif LANGUAGE=="zh":
         download_with_url(data_urls[1], data_filenames[1])
         unpack(data_dirs[1], data_filenames[1])
     else: #enzh
@@ -88,12 +89,13 @@ def download(lang):
             unpack(data_dir, data_filename)
     
 
-def pretokenize(lang):
+def pretokenize():
     enc = Tokenizer()
 
     def process_shard(shard):
         print(shard)
-        if os.path.exists(shard.replace(".json", ".bin")): return None  # 
+        # open when you not want to pretokenize repeatly.
+        # if os.path.exists(shard.replace(".json", ".bin")): return None 
         with open(shard, "r") as f:
             data = json.load(f)
         all_tokens = []
@@ -116,10 +118,10 @@ def pretokenize(lang):
     shard_filenames_en = sorted(glob.glob(os.path.join(data_dir_en, "*.json")))
     shard_filenames_zh = sorted(glob.glob(os.path.join(data_dir_zh, "*.json")))
     shard_filenames = []
-    if lang=="en":
+    if LANGUAGE=="en":
         assert len(shard_filenames_en)>0, f"Not found data in {data_dir_en}"
         shard_filenames = shard_filenames_en
-    elif lang=="zh":
+    elif LANGUAGE=="zh":
         assert len(shard_filenames_zh) >0, f"Not found data in {data_dir_zh}"
         shard_filenames = shard_filenames_zh
     else:
@@ -136,11 +138,10 @@ def pretokenize(lang):
 class PretokDataset(torch.utils.data.IterableDataset):
     """Loads pretokenized examples from disk and yields them as PyTorch tensors."""
 
-    def __init__(self, split, max_seq_len, language):
+    def __init__(self, split, max_seq_len):
         super().__init__()
         self.split = split
         self.max_seq_len = max_seq_len
-        self.language = language
 
     def __iter__(self):
         # get worker info within a DataLoader
@@ -158,11 +159,14 @@ class PretokDataset(torch.utils.data.IterableDataset):
         shard_filenames_en = sorted(glob.glob(os.path.join(data_dir_en, "*.bin")))
         shard_filenames_zh = sorted(glob.glob(os.path.join(data_dir_zh, "*.bin")))
         # train/test split. let's use only shard 0 for test split, rest train
-        if self.language == "en":
+        if LANGUAGE == "en":
+            print(f"only using english dataset")
             shard_filenames = shard_filenames_en[1:] if self.split == "train" else shard_filenames_en[:1]
-        elif self.language == "zh":
+        elif LANGUAGE == "zh":
+            print(f"only using chinese dataset")
             shard_filenames = shard_filenames_zh[1:] if self.split == "train" else shard_filenames_zh[:1]
         else:
+            print(f"Using both in chinese and english dataset")
             shard_filenames = shard_filenames_en[1:]+shard_filenames_zh[1:] if \
                     self.split == "train" else shard_filenames_en[:1] + shard_filenames_zh[:1]
         while True:
@@ -188,8 +192,8 @@ class PretokDataset(torch.utils.data.IterableDataset):
 class Task:
 
     @staticmethod
-    def iter_batches(split, batch_size, max_seq_len, device, num_workers=0, language="en"):
-        ds = PretokDataset(split, max_seq_len, language)
+    def iter_batches(split, batch_size, max_seq_len, device, num_workers=0):
+        ds = PretokDataset(split, max_seq_len)
         dl = torch.utils.data.DataLoader(
             ds, batch_size=batch_size, pin_memory=True, num_workers=num_workers
         )
@@ -199,21 +203,18 @@ class Task:
             yield x, y
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument("stage", type=str, choices=["download", "train_tokenizer", "pretokenize"])
-parser.add_argument("lang", type=str, default="enzh",
-                        choices=["en", "zh", "enzh"], help="choice language")
-args = parser.parse_args()
+
 
 if __name__ == "__main__":
     """Usage
-        en : python tinystories.py download en
-        enzh: python tinystories.py download enzh
+        python tinystories.py download
         python tinystories.py pretokenize
     """
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument("stage", type=str, choices=["download", "train_tokenizer", "pretokenize"])
+    args = parser.parse_args()
     fun = {
         "download": download,
         "pretokenize": pretokenize,
     }
-    fun[args.stage](args.lang)
+    fun[args.stage]

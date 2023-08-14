@@ -178,10 +178,10 @@ TOKENIZER_BIN = "tokenizers/llama2en/tokenizer.bin" # binary version of the toke
 When config is cheked,  we just need to run a single script to precess data.
 
 ```
-# Download dataset. [en, enzh, zh] 
->> python tinystories.py download enzh
+# Download dataset. choice which dataset(en, enzh, zh) to use in config.py. 
+>> python tinystories.py download
 # tokenizer
->> python tinystories.py pretokenize enzh
+>> python tinystories.py pretokenize
 ```
 
 Now, you can train your model.

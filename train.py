@@ -28,9 +28,8 @@ from model import Transformer, ModelArgs
 from torch.distributed import destroy_process_group, init_process_group
 from torch.nn.parallel import DistributedDataParallel as DDP
 
-from tinystories import Task, args
+from tinystories import Task
 from tinyshakespeare import ShakespeareTask
-
 # -----------------------------------------------------------------------------
 # I/O
 out_dir = "out/stories15M-llama2-enzh"
@@ -58,7 +57,7 @@ dropout = 0.0
 # adamw optimizer
 gradient_accumulation_steps = 4  # used to simulate larger batch sizes
 learning_rate = 5e-4  # max learning rate
-max_iters = 100000  # total number of training iterations
+max_iters = 150000  # total number of training iterations
 weight_decay = 1e-1
 beta1 = 0.9
 beta2 = 0.95
@@ -131,7 +130,6 @@ iter_batches = partial(
     max_seq_len=max_seq_len,
     device=device,
     num_workers=0,
-    language = args.language
 )
 
 # init these up here, can override if init_from='resume' (i.e. from a checkpoint)
