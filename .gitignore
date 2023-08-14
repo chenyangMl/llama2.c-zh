@@ -1,0 +1,15 @@
+*.pyc
+*.pth
+*.pt
+*.so
+/__pycache__/
+*/__pycache__/
+.vscode
+.idea
+*DS_Store
+
+local
+data
+run
+out
+wandb
