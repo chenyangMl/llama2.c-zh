@@ -266,7 +266,9 @@ TODO List:
 ## 参考
 
 llama2.c: https://github.com/karpathy/llama2.c
+
 Baichuan7B: https://huggingface.co/baichuan-inc/Baichuan-7B
+
 Llama2-Chinese： https://github.com/FlagAlpha/Llama2-Chinese
 
 
