@@ -8,7 +8,7 @@
 
 
 
-This project is builded on [Andrej Karpathy](https://github.com/karpathy)‘s [llama2.c](https://github.com/karpathy/llama2.c),  and extends it to Chinese scenarios. Project include 
+This project is built on [Andrej Karpathy](https://github.com/karpathy)‘s [llama2.c](https://github.com/karpathy/llama2.c),  and expand tokenizer to support training and inference in both Chinese and English. Project include 
 
 1)  tokenizer extended llama2, baichuan vocabulary 
 
