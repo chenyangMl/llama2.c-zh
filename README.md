@@ -5,7 +5,8 @@
 <p align="center">
   <img src="assets/llama2-zh.jpg" width="300" height="300" alt="Cute Llama-zh">
 </p>
-感谢[Andrej Karpathy](https://github.com/karpathy)提供[llama2.c](https://github.com/karpathy/llama2.c)工程，llama2.c 在llama2的基础上致力于研究小模型的能力边界和工程实践。
+
+感谢 [Andrej Karpathy](https://github.com/karpathy)提供 [llama2.c](https://github.com/karpathy/llama2.c)工程，llama2.c 在llama2的基础上致力于研究小模型的能力边界和工程实践。
 
 本工程希望将研究场景从英文拓展到中文。提供扩展的llama2词表和 [TinyStories](https://huggingface.co/datasets/roneneldan/TinyStories)的中文翻译数据TinyStory-zh，及训练的中英混合模型。
 
@@ -30,7 +31,7 @@ cd llama2.c-zh
 make run
 ```
 
-默认参数运行：
+参数运行llama2enzh：
 
 ```
 wget https://huggingface.co/52AI/tinyllamas_zh/resolve/main/stories15M-llama2-enzh.bin
@@ -46,7 +47,7 @@ PS: 这里有可能会出英文，是正常的。
 
 
 
-也可以传参运行：
+参数运行baichuan：
 
 ```
 wget https://huggingface.co/52AI/tinyllamas_zh/resolve/main/stories15M-baichuan.bin
