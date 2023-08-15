@@ -15,7 +15,7 @@
 
 ## 更新日志
 
-**2028.08.12：**
+**2023.08.12：**
 
 -  1M中文TinyStory数据（资源有限仅翻译了[story, feature, word, summary]中story部分）
 

@@ -20,7 +20,7 @@ This project is built on [Andrej Karpathy](https://github.com/karpathy)‘s [lla
 
 ## Update logs
 
-**2028.08.12：**
+**2023.08.12：**
 
 - 1M [Chinese TinyStories](https://huggingface.co/datasets/52AI/TinyStoriesZh/tree/main)（Only translate story of {story, feature, word, summary}, with  limited resources）
 -  [Llama2-52k-enzh](https://huggingface.co/52AI/tinyllamas_zh/tree/main)， [baichuan-64k-enzh](https://huggingface.co/52AI/tinyllamas_zh/tree/main) for pipeline test. 
