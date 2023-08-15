@@ -282,7 +282,7 @@ whisper.cpp(cpp推理ASR工程) https://github.com/ggerganov/whisper.cpp   | [Ge
 
 Fastllm(c++加速LLM推理): https://github.com/ztxz16/fastllm
 
-
+vLLM(高效推理和部署) https://github.com/vllm-project/vllm
 
 ## [License](https://github.com/karpathy/llama2.c)
 

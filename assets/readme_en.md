@@ -267,7 +267,7 @@ whisper.cpp: https://github.com/ggerganov/whisper.cpp  | | [Georgi Gerganov](htt
 
 Fastllm:  https://github.com/ztxz16/fastllm
 
-
+vLLM:  https://github.com/vllm-project/vllm
 
 ## [License](https://github.com/karpathy/llama2.c)
 
