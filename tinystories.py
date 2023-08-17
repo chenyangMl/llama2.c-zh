@@ -94,8 +94,8 @@ def pretokenize():
 
     def process_shard(shard):
         print(shard)
-        # open when you not want to pretokenize repeatly.
-        # if os.path.exists(shard.replace(".json", ".bin")): return None 
+        # open when you do not want to pretokenize repeatly.
+        if os.path.exists(shard.replace(".json", ".bin")): return None 
         with open(shard, "r") as f:
             data = json.load(f)
         all_tokens = []
@@ -128,7 +128,7 @@ def pretokenize():
         assert len(shard_filenames_zh) >0, f"Not found data in {data_dir_zh}"
         assert len(shard_filenames_en)>0, f"Not found data in {data_dir_en}"
         shard_filenames = shard_filenames_en + shard_filenames_zh
-    
+    print(shard_filenames)
     # process all the shards in a threadpool
     with ThreadPoolExecutor(max_workers=16) as executor:
         executor.map(process_shard, shard_filenames)
@@ -217,4 +217,4 @@ if __name__ == "__main__":
         "download": download,
         "pretokenize": pretokenize,
     }
-    fun[args.stage]
+    fun[args.stage]()
