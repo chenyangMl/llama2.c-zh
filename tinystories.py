@@ -128,7 +128,6 @@ def pretokenize():
         assert len(shard_filenames_zh) >0, f"Not found data in {data_dir_zh}"
         assert len(shard_filenames_en)>0, f"Not found data in {data_dir_en}"
         shard_filenames = shard_filenames_en + shard_filenames_zh
-    print(shard_filenames)
     # process all the shards in a threadpool
     with ThreadPoolExecutor(max_workers=16) as executor:
         executor.map(process_shard, shard_filenames)
