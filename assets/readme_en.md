@@ -196,7 +196,13 @@ python train.py
 
 You can refer to the resources to prepare a customized vocabulary, and then start training from scratch.
 
-**new vocab**：https://huggingface.co/docs/tokenizers/pipeline
+**new vocab**：
+
+chinese-tokenizer example:  [train_tokenizer_from_scrath](https://github.com/chenyangMl/llama2.c-zh/blob/main/tokenizers/train_tokenizer_from_scrath.ipynb)
+
+ HF-demo: https://huggingface.co/docs/tokenizers/pipeline
+
+sentencepiece example: [sentencepiece_python_module_example](https://github.com/google/sentencepiece/blob/master/python/sentencepiece_python_module_example.ipynb)
 
 **extend vocab**：[sentencepiece add new vocab](https://github.com/google/sentencepiece/blob/9cf136582d9cce492ba5a0cfb775f9e777fe07ea/python/add_new_vocab.ipynb)
 

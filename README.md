@@ -199,7 +199,13 @@ python train.py
 
 可参考下列方式准备自定义的词表，再从头开始训练.
 
-**从头训练词表**：https://huggingface.co/docs/tokenizers/pipeline
+**从头训练词表**：
+
+   构建纯中文词表:   [端到端构建一个中文词表(红楼梦.txt)](https://github.com/chenyangMl/llama2.c-zh/blob/main/tokenizers/train_tokenizer_from_scrath.ipynb)
+
+​    HF-示例  https://huggingface.co/docs/tokenizers/pipeline
+
+   Sentencepiece 示例:  [端到端构建Unigram, BPE等tokenizer.](https://github.com/google/sentencepiece/blob/master/python/sentencepiece_python_module_example.ipynb)
 
 **扩展词表**：[sentencepiece add new vocab](https://github.com/google/sentencepiece/blob/9cf136582d9cce492ba5a0cfb775f9e777fe07ea/python/add_new_vocab.ipynb)
 
