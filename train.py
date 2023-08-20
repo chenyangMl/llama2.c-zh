@@ -28,8 +28,9 @@ from model import Transformer, ModelArgs
 from torch.distributed import destroy_process_group, init_process_group
 from torch.nn.parallel import DistributedDataParallel as DDP
 
-from tinystories import Task
-from tinyshakespeare import ShakespeareTask
+from dataProcess.tinystories import Task
+from dataProcess.tinyshakespeare import ShakespeareTask
+from dataProcess.tinyfictions import TaskFiction
 # -----------------------------------------------------------------------------
 # I/O
 out_dir = "out/stories15M-llama2-enzh"
@@ -44,11 +45,11 @@ wandb_log = False  # disabled by default
 wandb_project = "llama2-enzh"
 wandb_run_name = "run" + datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
 # data
-batch_size = 96   # 64 for baichuan. if gradient_accumulation_steps > 1, this is the micro-batch size
+batch_size = 96   # 64 for baichuan. 96(llama2enzh) 128(llama2en) if gradient_accumulation_steps > 1, this is the micro-batch size
 max_seq_len = 256
 dataset = "tinystories"  # tinystories|tinyshakespeare
 # model
-vocab_size = 55296      #32000(llama2) 64000(baichuan)
+vocab_size = 55296      #32000(llama2) 64000(baichuan) 55296(llama2enzh) 10k(llama2zh)
 dim = 288
 n_layers = 6
 n_heads = 6
@@ -123,7 +124,7 @@ ctx = (
 )
 
 # task-specific setup
-task = {'tinystories': Task, 'tinyshakespeare': ShakespeareTask}[dataset]
+task = {'tinystories': Task, 'tinyshakespeare': ShakespeareTask, "tinyfinction":TaskFiction}[dataset]
 iter_batches = partial(
     task.iter_batches,
     batch_size=batch_size,
@@ -279,8 +280,12 @@ while True:
                     "config": config,
                 }
                 print(f"saving checkpoint to {out_dir}")
-                torch.save(checkpoint, os.path.join(out_dir, "ckpt.pt"))
-                raw_model.export(os.path.join(out_dir, "model.bin"))
+                if always_save_checkpoint: # save all ckpt
+                    torch.save(checkpoint, os.path.join(out_dir, "ckpt_%s.pt"%iter_num))
+                    raw_model.export(os.path.join(out_dir, "model_%s.bin"%iter_num))
+                else:
+                    torch.save(checkpoint, os.path.join(out_dir, "ckpt.pt"))
+                    raw_model.export(os.path.join(out_dir, "model.bin"))
     if iter_num == 0 and eval_only:
         break
 
