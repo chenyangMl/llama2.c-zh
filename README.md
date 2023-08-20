@@ -15,6 +15,12 @@
 
 ## 更新日志
 
+**2023.08.20：**
+
+- [新增2M的中文TinyStory数据。](https://huggingface.co/datasets/52AI/TinyStoriesZh/tree/main)
+- 用新数据重新跑了一版 [Llama2-52k-enzh模型 ](https://huggingface.co/52AI/tinyllamas_zh/tree/main) 已同步到HF上, 使用请重新下载模型
+- 提供自定义tokenizer构建，并提供测试模型。(tokenizer vocabsize=10k, 语料是红楼梦.txt)
+
 **2023.08.12：**
 
 -  1M中文TinyStory数据（资源有限仅翻译了[story, feature, word, summary]中story部分）
@@ -206,6 +212,24 @@ python train.py
 ​    HF-示例  https://huggingface.co/docs/tokenizers/pipeline
 
    Sentencepiece 示例:  [端到端构建Unigram, BPE等tokenizer.](https://github.com/google/sentencepiece/blob/master/python/sentencepiece_python_module_example.ipynb)
+
+```
+# 利用重构的tokenizer进行训练, 先修改 config.py 中的词表路径为对应路径
+# 下载和预处理token
+python dataProcess/tinyfictions.py download
+
+python dataProcess/tinyfictions.py pretokenize
+
+# 训练. 修改batch_size=256, vocab_size=自定义的词表长度, 其他根据需要进行调整
+python train.py
+```
+
+提供一个测试模型(10k词表)：wget https://huggingface.co/52AI/fictions/resolve/main/model-hlmeng.bin
+
+./run model-hlmeng.bin -k tokenizers/custom_tokenizer/meng.bin -i " 宝玉" 
+
+> 宝玉听如此说,便唬得欲退不能退,果觉自形污秽不堪。警幻忙携住宝玉的手,向众姊妹道:“你等不知原委:今日原欲往荣府去接绛珠,适从宁府所过,偶遇宁、荣二公之灵,嘱吾云:‘吾家自国朝定鼎以来,功名奕世,富贵传流,虽历百年,奈运终数尽,不可挽回。故遗之子孙虽多,竟无一可以继业。其中惟嫡孙宝玉一人,禀性乖张,生情怪谲,虽聪明灵慧,略可望成,无奈吾家运数合终,恐无人规引入正。幸仙姑偶来,万望先以情欲声色等事警其痴顽,或能使彼跳出迷人圈子,然后入于正路,亦吾兄弟之幸矣。’如此嘱吾,故发慈心,引彼至此,先以彼家上、中、下三等女子之终身册籍,令彼熟玩,尚未觉悟。故引彼再至此处,令其再历饮馔声色之幻,或冀将来一悟,常
+> achieved tok/s: 116.598080
 
 **扩展词表**：[sentencepiece add new vocab](https://github.com/google/sentencepiece/blob/9cf136582d9cce492ba5a0cfb775f9e777fe07ea/python/add_new_vocab.ipynb)
 
