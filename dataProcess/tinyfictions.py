@@ -24,6 +24,21 @@ from tokenizer import Tokenizer
 DATA_CACHE_DIR = "data/fictions"
 
 
+def download_file(url: str, fname: str, chunk_size=1024):
+    """Helper function to download a file from a given url"""
+    resp = requests.get(url, stream=True)
+    total = int(resp.headers.get("content-length", 0))
+    with open(fname, "wb") as file, tqdm(
+        desc=fname,
+        total=total,
+        unit="iB",
+        unit_scale=True,
+        unit_divisor=1024,
+    ) as bar:
+        for data in resp.iter_content(chunk_size=chunk_size):
+            size = file.write(data)
+            bar.update(size)
+
 def download():
 
     """Downloads the dataset to disk."""
@@ -31,10 +46,13 @@ def download():
 
     # download the fiction dataset, unless it's already downloaded
     filename = "红楼梦.txt"
-    if os.path.exists(os.path.join(DATA_CACHE_DIR, filename)):
+    filepath = os.path.join(DATA_CACHE_DIR, filename)
+    if os.path.exists(filepath):
         print(f"{filename} is existed in {DATA_CACHE_DIR}")
     else:
-        os.system(f"wget https://github.com/shjwudp/shu/raw/master/books/{filename} -P {DATA_CACHE_DIR}")
+        # os.system(f"wget https://github.com/shjwudp/shu/raw/master/books/{filename} -P {DATA_CACHE_DIR}")
+        url = f"https://github.com/shjwudp/shu/raw/master/books/{filename}"
+        download_file(url, filepath)
 
 def pretokenize():
     enc = Tokenizer()

@@ -169,6 +169,7 @@ class PretokDataset(torch.utils.data.IterableDataset):
             print(f"Using both in chinese and english dataset")
             shard_filenames = shard_filenames_en[1:]+shard_filenames_zh[1:] if \
                     self.split == "train" else shard_filenames_en[:1] + shard_filenames_zh[:1]
+        assert len(shard_filenames) > 0, f"Not found dataset in {DATA_CACHE_DIR}"
         while True:
             rng.shuffle(shard_filenames)
             for shard in shard_filenames:
