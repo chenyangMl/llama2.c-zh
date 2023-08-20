@@ -13,3 +13,4 @@ data
 run
 out
 wandb
+.ipynb_checkpoints/
