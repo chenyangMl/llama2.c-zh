@@ -57,7 +57,7 @@ def download():
 
         # print a single example just for debugging and such
         shard_filenames = sorted(glob.glob(os.path.join(data_dir, "*.json")))
-        with open(shard_filenames[0], "r") as f:
+        with open(shard_filenames[0], "r", encoding="utf-8") as f:
             data = json.load(f)
         print("Download done.")
         print(f"Number of shards: {len(shard_filenames)}")
@@ -208,8 +208,8 @@ class Task:
 
 if __name__ == "__main__":
     """Usage
-        python tinystories.py download
-        python tinystories.py pretokenize
+        python dataProcess/tinystories.py download
+        python dataProcess/tinystories.py pretokenize
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("stage", type=str, choices=["download", "train_tokenizer", "pretokenize"])
