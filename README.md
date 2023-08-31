@@ -32,7 +32,7 @@
 ## 怎么用
 
 ```
-git clone git clone https://github.com/chenyangMl/llama2.c-zh.git
+git clone https://github.com/chenyangMl/llama2.c-zh.git
 cd llama2.c-zh
 make run
 ```
